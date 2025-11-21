@@ -20,6 +20,8 @@ mongoose
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
+var catwaysRouter = require("./routes/catways");
+var reservationsRouter = require("./routes/reservations");
 
 // Middleware d'authentification
 var authMiddleware = require("./middlewares/authMiddleware");
@@ -36,7 +38,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", authRouter);
 app.use("/", indexRouter);
 
-// Routes protégées (exemple : /users)
+// Routes protégées
 app.use("/users", authMiddleware, usersRouter);
+app.use("/catways", authMiddleware, catwaysRouter);
+app.use("/catways", authMiddleware, reservationsRouter);
 
 module.exports = app;
