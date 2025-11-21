@@ -1,36 +1,29 @@
-// scripts/seed.js
 const mongoose = require("mongoose");
-const fs = require("fs");
-const path = require("path");
-require("dotenv").config();
+const dotenv = require("dotenv");
 
-const Catway = require("../models/Catway");
-const Reservation = require("../models/Reservation");
+dotenv.config();
+
+const User = require("../models/user");
 
 async function seed() {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log("Connecté à MongoDB pour le seed");
 
-    const catwaysPath = path.join(__dirname, "../data/catways.json");
-    const reservationsPath = path.join(__dirname, "../data/reservations.json");
+    console.log("Connecté à MongoDB");
 
-    const catwaysData = JSON.parse(fs.readFileSync(catwaysPath, "utf-8"));
-    const reservationsData = JSON.parse(
-      fs.readFileSync(reservationsPath, "utf-8")
-    );
+    await User.deleteMany({});
 
-    // On vide les collections avant de réimporter
-    await Catway.deleteMany({});
-    await Reservation.deleteMany({});
+    await User.create({
+      username: "Admin",
+      email: "admin@exemple.com",
+      // Le hook pre("save") du modèle s'occupe de hasher
+      password: "test1234",
+    });
 
-    await Catway.insertMany(catwaysData);
-    await Reservation.insertMany(reservationsData);
-
-    console.log("Données importées avec succès");
-    process.exit(0);
+    console.log("Utilisateur créé : admin@exemple.com / test1234");
+    process.exit();
   } catch (err) {
-    console.error("Erreur pendant le seed :", err);
+    console.error(err);
     process.exit(1);
   }
 }
