@@ -2,10 +2,11 @@
   "name": "port-russell-api",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
+"scripts": {
   "start": "node ./bin/www",
   "dev": "nodemon ./bin/www",
-  "doc": "jsdoc -c jsdoc.json"
+  "doc": "jsdoc -c jsdoc.json",
+  "seed": "node scripts/seed.js"
 },
   "dependencies": {
     "bcrypt": "^6.0.0",
