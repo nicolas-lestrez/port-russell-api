@@ -5,10 +5,18 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
 var mongoose = require("mongoose");
+var ensureAdminUser = require("./scripts/ensureAdminUser");
 
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connecté à MongoDB"))
+  .then(async () => {
+    console.log("Connecté à MongoDB");
+    try {
+      await ensureAdminUser();
+    } catch (err) {
+      console.error("Erreur lors de la création de l'admin :", err.message);
+    }
+  })
   .catch((err) => console.error("Erreur MongoDB :", err.message));
 
 // Routes backend
