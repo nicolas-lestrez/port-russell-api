@@ -1,18 +1,18 @@
-// routes/catways.js
+/**
+ * @file Catways – CRUD complet pour gérer les emplacements de quai (catways)
+ * @description Toutes les routes sont préfixées par /catways dans app.js
+ */
+
 const express = require("express");
 const router = express.Router();
-
-// Import correct des modèles
 const Catway = require("../models/Catway");
-const Reservation = require("../models/Reservation");
 
 /**
  * GET /catways
- * Récupère la liste de tous les catways.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {void}
+ * @summary Retourne la liste de tous les catways
+ * @tags Catways
+ * @returns {Array<object>} 200 - Liste des catways
+ * @returns {object} 500 - Erreur serveur
  */
 router.get("/", async (req, res) => {
   try {
@@ -25,12 +25,13 @@ router.get("/", async (req, res) => {
 });
 
 /**
- * GET /catways/:id
- * Récupère un catway par son numéro (catwayNumber).
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {void}
+ * GET /catways/{id}
+ * @summary Retourne un catway selon son numéro
+ * @tags Catways
+ * @param {number} id.path.required - Numéro du catway
+ * @returns {object} 200 - Catway trouvé
+ * @returns {object} 400 - ID invalide
+ * @returns {object} 404 - Catway non trouvé
  */
 router.get("/:id", async (req, res) => {
   try {
@@ -55,24 +56,23 @@ router.get("/:id", async (req, res) => {
 
 /**
  * POST /catways
- * Crée un nouveau catway.
+ * @summary Crée un nouveau catway
+ * @tags Catways
  *
- * Body JSON :
- * {
- *   "catwayNumber": Number,
- *   "catwayType": "long" | "short",
- *   "catwayState": "texte de ton choix"
- * }
+ * @param {object} request.body.required - Données du catway
+ * @param {number} request.body.catwayNumber - Numéro du catway
+ * @param {string} request.body.catwayType - "long" ou "short"
+ * @param {string} request.body.catwayState - État du catway
  *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {void}
+ * @returns {object} 201 - Catway créé
+ * @returns {object} 400 - Données invalides
+ * @returns {object} 409 - Numéro déjà existant
+ * @returns {object} 500 - Erreur serveur
  */
 router.post("/", async (req, res) => {
   try {
     const { catwayNumber, catwayType, catwayState } = req.body;
 
-    // Validation basique
     if (
       typeof catwayNumber !== "number" ||
       !["long", "short"].includes(catwayType) ||
@@ -83,7 +83,6 @@ router.post("/", async (req, res) => {
         .json({ message: "Données invalides pour le catway." });
     }
 
-    // Vérifier que le numéro n'est pas déjà pris
     const existing = await Catway.findOne({ catwayNumber });
     if (existing) {
       return res
@@ -105,17 +104,15 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * PUT /catways/:id
- * Met à jour UNIQUEMENT l'état (catwayState) d'un catway.
- *
- * Body JSON :
- * {
- *   "catwayState": "nouvel état"
- * }
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {void}
+ * PUT /catways/{id}
+ * @summary Met à jour uniquement l’état d’un catway
+ * @tags Catways
+ * @param {number} id.path.required - Numéro du catway
+ * @param {object} request.body.required
+ * @param {string} request.body.catwayState - Nouvel état du catway
+ * @returns {object} 200 - Catway mis à jour
+ * @returns {object} 400 - Données invalides
+ * @returns {object} 404 - Catway non trouvé
  */
 router.put("/:id", async (req, res) => {
   try {
@@ -148,12 +145,12 @@ router.put("/:id", async (req, res) => {
 });
 
 /**
- * DELETE /catways/:id
- * Supprime un catway.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {void}
+ * DELETE /catways/{id}
+ * @summary Supprime un catway
+ * @tags Catways
+ * @param {number} id.path.required - Numéro du catway
+ * @returns {object} 200 - Confirmation de suppression
+ * @returns {object} 404 - Catway non trouvé
  */
 router.delete("/:id", async (req, res) => {
   try {

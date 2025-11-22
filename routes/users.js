@@ -6,12 +6,20 @@ const router = express.Router();
 const User = require("../models/user");
 
 /**
+ * @file users.js
+ * @description Routes CRUD pour gérer les utilisateurs (protégées par JWT).
+ */
+
+/**
  * GET /users
- * Récupère la liste de tous les utilisateurs.
+ * @summary Retourne la liste de tous les utilisateurs
+ * @tags Users
+ * @return {Array<object>} 200 - Liste des utilisateurs
+ * @return {object} 500 - Erreur serveur
  */
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find().select("-password"); // pas de mdp
+    const users = await User.find().select("-password");
     return res.json(users);
   } catch (err) {
     console.error("Erreur GET /users :", err);
@@ -20,8 +28,13 @@ router.get("/", async (req, res) => {
 });
 
 /**
- * GET /users/:email
- * Récupère un utilisateur par email.
+ * GET /users/{email}
+ * @summary Retourne un utilisateur via son email
+ * @tags Users
+ * @param {string} email.path.required - Email du user
+ * @return {object} 200 - Utilisateur trouvé
+ * @return {object} 404 - Utilisateur non trouvé
+ * @return {object} 500 - Erreur serveur
  */
 router.get("/:email", async (req, res) => {
   try {
@@ -42,14 +55,13 @@ router.get("/:email", async (req, res) => {
 
 /**
  * POST /users
- * Crée un utilisateur.
- *
- * Body JSON :
- * {
- *   "username": "Nom",
- *   "email": "email@example.com",
- *   "password": "motdepasse"
- * }
+ * @summary Crée un nouvel utilisateur
+ * @tags Users
+ * @param {object} request.body.required - username, email, password
+ * @return {object} 201 - Utilisateur créé
+ * @return {object} 400 - Données manquantes
+ * @return {object} 409 - Email déjà utilisé
+ * @return {object} 500 - Erreur serveur
  */
 router.post("/", async (req, res) => {
   try {
@@ -78,10 +90,7 @@ router.post("/", async (req, res) => {
 
     return res.status(201).json({
       message: "Utilisateur créé",
-      user: {
-        username: newUser.username,
-        email: newUser.email,
-      },
+      user: { username: newUser.username, email: newUser.email },
     });
   } catch (err) {
     console.error("Erreur POST /users :", err);
@@ -90,14 +99,14 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * PUT /users/:email
- * Met à jour un utilisateur.
- *
- * Body JSON (exemple) :
- * {
- *   "username": "Nouveau Nom",
- *   "password": "nouveau mot de passe"
- * }
+ * PUT /users/{email}
+ * @summary Met à jour un utilisateur par email
+ * @tags Users
+ * @param {string} email.path.required - Email de l’utilisateur
+ * @param {object} request.body - Données à modifier
+ * @return {object} 200 - Utilisateur mis à jour
+ * @return {object} 404 - Utilisateur non trouvé
+ * @return {object} 500 - Erreur serveur
  */
 router.put("/:email", async (req, res) => {
   try {
@@ -128,8 +137,13 @@ router.put("/:email", async (req, res) => {
 });
 
 /**
- * DELETE /users/:email
- * Supprime un utilisateur.
+ * DELETE /users/{email}
+ * @summary Supprime un utilisateur via son email
+ * @tags Users
+ * @param {string} email.path.required - Email du user
+ * @return {object} 200 - Confirmation suppression
+ * @return {object} 404 - Utilisateur non trouvé
+ * @return {object} 500 - Erreur serveur
  */
 router.delete("/:email", async (req, res) => {
   try {
