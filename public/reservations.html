@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CRUD Réservations</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Réservations</h1>
+      <div class="topbar-right">
+        <a href="/dashboard.html">Retour dashboard</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Réservations d’un catway</h2>
+        <form id="load-reservations-form">
+          <div class="form-group">
+            <label>Numéro de catway</label>
+            <input type="number" id="catway-id" value="1" required />
+          </div>
+          <button type="submit">Charger</button>
+        </form>
+
+        <table class="table" id="reservations-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Bateau</th>
+              <th>Client</th>
+              <th>Du</th>
+              <th>Au</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p id="reservations-message"></p>
+      </section>
+
+      <section class="card">
+        <h2>Créer une réservation</h2>
+        <form id="create-reservation-form">
+          <div class="form-group">
+            <label>Catway #</label>
+            <input type="number" id="res-catway-number" required />
+          </div>
+          <div class="form-group">
+            <label>Client</label>
+            <input type="text" id="res-client" required />
+          </div>
+          <div class="form-group">
+            <label>Bateau</label>
+            <input type="text" id="res-boat" required />
+          </div>
+          <div class="form-group">
+            <label>Date début</label>
+            <input type="date" id="res-start" required />
+          </div>
+          <div class="form-group">
+            <label>Date fin</label>
+            <input type="date" id="res-end" required />
+          </div>
+          <button type="submit">Créer</button>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/javascripts/reservations.js"></script>
+  </body>
+</html>

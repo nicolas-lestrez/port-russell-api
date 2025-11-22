@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Port Russell - Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Dashboard – Port Russell</h1>
+      <div class="topbar-right">
+        <span id="user-info"></span>
+        <button id="logout-btn">Déconnexion</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Menu</h2>
+        <nav class="menu">
+          <a href="/dashboard.html">Dashboard</a>
+          <a href="/catways.html">CRUD Catways</a>
+          <a href="/reservations.html">CRUD Réservations</a>
+          <a href="/users.html">CRUD Utilisateurs</a>
+        </nav>
+        <p>Date du jour : <span id="today"></span></p>
+      </section>
+
+      <section class="card">
+        <h2>Dernières réservations (exemple : catway 1)</h2>
+        <table class="table" id="reservations-table">
+          <thead>
+            <tr>
+              <th>Bateau</th>
+              <th>Client</th>
+              <th>Du</th>
+              <th>Au</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- rempli par JS -->
+          </tbody>
+        </table>
+        <p id="reservations-message"></p>
+      </section>
+    </main>
+
+    <script type="module" src="/javascripts/dashboard.js"></script>
+  </body>
+</html>

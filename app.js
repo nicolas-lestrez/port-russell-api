@@ -16,7 +16,7 @@ mongoose
     console.error("Erreur de connexion MongoDB :", err.message);
   });
 
-// Routes
+// Routes backend
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
@@ -32,11 +32,13 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// 👉 Sert tout ce qui est dans /public (HTML, CSS, JS, images…)
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes publiques
 app.use("/auth", authRouter);
-app.use("/", indexRouter);
+app.use("/", indexRouter); // "/" renvoie index.html
 
 // Routes protégées
 app.use("/users", authMiddleware, usersRouter);
